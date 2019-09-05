@@ -1,0 +1,440 @@
+[Language]
+Name           = Julia
+Extension      = jl
+Keywords       = begin, while, if, for, try, return, break, continue, function, macro,
+                 quote, let, local, global, const, do, struct, module, baremodule, using,
+                 import, export, end, else, elseif, catch, finally, true, false
+
+Conflicts                     
+Case Sensitive = true
+Options        =  
+             
+; =======================================================
+; Literals    
+; =======================================================              
+
+[Types]
+Integer      =  Int
+Real         =  float
+Boolean      =  Bool
+String       =  String 
+
+[Function ID]
+Convention = camel
+Normal     = {Name}
+Conflict   = func_{Name}
+
+[Variable ID]
+Convention = camel
+Normal     = {Name}
+Conflict   = var_{Name}
+
+[String Literal]
+Text           = "{Characters}"
+Replace Char 1 = "
+Replace By 1   = \"
+Replace Char 2 = \
+Replace By 2   = \\
+
+[Boolean Literal]
+true     =  true
+false    =  false
+
+[Integer Literal]
+Text     = {Integral}
+
+[Real Literal]
+Text     = {Integral}.{Fractional}
+
+[Variable Access]
+Precedence = 100
+Text       = {Name}               | ~subscript
+           = {Name}[{Subscript}]  | subscript          
+           
+; =======================================================
+; Expressions      
+; =======================================================
+; Python precedence: 
+; 1. or 
+; 2. and 
+; 3. not
+; 4. Relational and equality: =, >, < ...
+; 5. Addition 
+; 6. Multiply 
+; 7. Unary: -
+; 8. **
+; 100. Atom, paranthesis
+         
+[Or]
+Precedence   = 1
+Needed 1     = 1
+Needed 2     = 2
+Text         = {1} or {2}
+
+[And]
+Precedence   = 2
+Needed 1     = 2
+Needed 2     = 3
+Text         = {1} and {2}
+
+[Equals]
+Precedence   = 3                            
+Needed 1     = 4      
+Needed 2     = 4 
+Text         = {1} == {2}
+
+[Not Equals]
+Precedence   = 3                            
+Needed 1     = 4      
+Needed 2     = 4 
+Text         = {1} != {2}
+             
+[Less Than]
+Precedence   = 3                            
+Needed 1     = 4      
+Needed 2     = 4 
+Text         = {1} < {2}
+
+[Less Equal Than]
+Precedence   = 3                            
+Needed 1     = 4      
+Needed 2     = 4 
+Text         = {1} <= {2}
+
+[Greater Than]
+Precedence   = 3                            
+Needed 1     = 4      
+Needed 2     = 4 
+Text         = {1} > {2}
+
+[Greater Equal Than]
+Precedence   = 3                            
+Needed 1     = 4      
+Needed 2     = 4 
+Text         = {1} >= {2}
+
+[Concatenate]
+Precedence   = 5
+
+Needed 1     = 5        | string-1
+             = 1        | ~string-1
+
+Needed 2     = 6        | string-2
+             = 1        | ~string-2
+
+Text         = {1} + {2}                 | string-1, string-2
+             = {1} + str({2})            | string-1, ~string-2
+             = str({1}) + {2}            | ~string-1, string-2
+             = str({1}) + str({2})       | ~string-1, ~string-2      
+
+[Add]
+Type         = real         | ~integer-integer
+             = integer      | integer-integer
+             
+Precedence   = 5
+Needed 1     = 5
+Needed 2     = 6
+Text         = {1} + {2}
+
+[Subtract]
+Type         = real         | ~integer-integer
+             = integer      | integer-integer
+
+Precedence   = 5
+Needed 1     = 5
+Needed 2     = 6
+Text         = {1} - {2}
+
+[Multiply]
+Type         = real         | ~integer-integer
+             = integer      | integer-integer
+
+Precedence   = 6
+Needed 1     = 6
+Needed 2     = 7
+Text         = {1} * {2}
+
+[Divide]
+Type         = real
+Precedence   = 6
+Needed 1     = 6              |  ~integer-integer
+             = 1              |  integer-integer
+
+Needed 2     = 7
+Text         = {1} / {2}           |  ~integer-integer  
+             = float({1}) / {2}    |  integer-integer
+             
+[Modulus]
+Type         = integer
+Precedence   = 6
+Needed 1     = 6
+Needed 2     = 7
+Text         = {1} % {2}
+
+[Power]
+Type         = real
+Precedence   = 8
+Needed 1     = 9
+Needed 2     = 8
+Text         = {1} ** {2}
+
+[Not]
+Type         = boolean
+Precedence   = 3
+Needed 1     = 3
+Text         = not {1}
+
+[Negate]
+Type         = real         | ~integer 
+             = integer      | integer 
+             
+Precedence   = 7
+Needed 1     = 7
+Text         = -{1}
+
+[Subexpression]
+Precedence   = 100
+Text         = ({Expression})
+
+; =======================================================
+; Intrinsic Functions      
+; =======================================================
+
+[Abs]
+Precedence = 100
+Needed 1   = 0 
+Text       = fabs({1})
+
+[ArcCos]
+Precedence = 100
+Needed 1   = 0 
+Text       = acos({1})
+
+[ArcSin]
+Precedence = 100
+Needed 1   = 0 
+Text       = asin({1})
+
+[ArcTan]
+Precedence = 100
+Needed 1   = 0 
+Text       = atan({1})
+
+[Char]
+Precedence = 100
+Needed 1   = 100
+Needed 2   = 0
+Text       = {1}[{2}]
+
+[Cos]
+Precedence = 100
+Needed 1   = 0 
+Text       = cos({1})
+
+[Int]
+Precedence = 100
+Needed 1   = 0 
+Text       = int({1})
+
+[Len]
+Precedence = 100
+Needed 1   = 0 
+Text       = len({1})
+
+[Log]
+Precedence = 100
+Needed 1   = 0 
+Text       = log({1})
+
+[Log10]
+Precedence = 100
+Needed 1   = 0 
+Text       = log10({1})
+
+[Pi]
+Precedence = 100
+Text       = math.pi
+
+[Random]
+Precedence = 100
+Needed 1   = 6 
+Text       = int(random.random() * {1})
+
+[Sin]
+Precedence = 100
+Needed 1   = 0 
+Text       = sin({1})
+
+[Sgn]
+Precedence = 100
+Needed 1   = 0 
+Text       = sgn({1})
+
+[Size]
+Precedence = 100
+Needed 1   = 0
+Text       = len({1})
+
+[Sqrt]
+Precedence = 100
+Needed 1   = 0 
+Text       = sqrt({1})
+
+[Tan]
+Precedence = 100
+Needed 1   = 0 
+Text       = tan({1})
+
+[ToChar]
+Precedence = 100
+Needed 1   = 0
+Text       = chr({1})
+
+[ToCode]
+Precedence = 100
+Needed 1   = 0
+Text       = ord({1})
+
+[ToInteger]
+Precedence = 100
+Needed 1   = 0
+Text       = int({1})
+
+[ToFixed]
+Type       = string
+Precedence = 100
+Needed 1   = 0 
+Needed 2   = 0 
+Text       = toFixed({1},{2})
+
+[ToReal]
+Precedence = 100
+Needed 1   = 0
+Text       = float({1})
+
+[ToString]
+Precedence = 100
+Needed 1   = 0
+Text       = str({1})
+
+; =======================================================
+; Function call      
+; =======================================================
+
+[Function Call]
+Precedence = 100
+Text       = {name}({arguments}) 
+
+[Argument]
+Separator  = ,{space}
+Text       = {expression}
+
+; =======================================================
+; Program
+; =======================================================
+
+[Program]
+Text      = import random                                             | random
+          =                                                           | random 
+          
+          = # Python lacks a sign function. This code implements it.  | sgn
+          = def sgn(n):                                               | sgn    
+          = if n == 0: return 0                                       | sgn   |  1
+          = elif n < 0: return -1                                     | sgn   |  1
+          = else: return 1                                            | sgn   |  1
+          =                                                           | sgn
+
+          = def toFixed(value, digits):                               | tofixed 
+          = return "%.*f" % (digits, value)                           | tofixed  | 1 
+          =                                                           | tofixed 
+          
+          = -->FUNCTIONS 
+          = -->MAIN
+
+[Main]
+Text      = # Main                                                    | functions          
+          = random.seed()   #Prepare random number generator          | random
+          = -->BLOCK
+
+; =======================================================
+; Function  
+; =======================================================
+          
+[Function]
+Text      = function {name}({parameters})   
+          = -->BLOCK                                          |        | 1 
+          = pass                                              | ~block | 1
+          =                                                   | return | 1
+          = return {return}                                   | return | 1          
+          = 
+          = end
+
+[Parameter]
+
+Separator = ,{space}
+Text      = {name}         
+               
+; =======================================================
+; Statements      
+; =======================================================
+
+[Assign]         
+Text      = {Variable} = {Expression}            
+            
+[Call]
+Text      = {Name} ({Arguments})
+
+[Comment]
+Text      = # {Text} 
+
+[Declare Name]      
+Separator  = ,{space}      
+Text       = {name}
+
+[Declare]
+Name mode = Singular 
+
+Text      = {Name} = Array{{Int64,1}(undef, {Size})            | Array, integer
+          = {Name} = Array{{Float64,1}(undef, {Size})            | Array, real 
+          = {Name} = Array{{String,1}(undef, {Size})           | Array, string
+          = {Name} = Array{{Bool,1}(undef, {Size})        | Array, boolean
+          = {Name} = Array{Any, {size}}             | Array, none                
+[Do]
+Text      = while true:    #This simulates a Do Loop 
+          = -->BLOCK                                     || 1   
+          = {condition} && break   #Exit loop      || 1
+          = end
+            
+[For]
+Text      = for {Variable} in {start}:{step}:{end}   |  inc
+          = for {Variable} in {start}:-{step}:{end}  |  ~inc
+          = -->BLOCK                                                    |        | 1  
+          = end  
+          = pass                                                        | ~block | 1
+          
+[Input]
+Text      = {Variable} = parse(Int,readline())                       | integer
+          = {Variable} = parse(Float64,readline())                     | real
+          = {Variable} = parse(Bool,readline())          | boolean
+          = {Variable} = readline()                            | string
+          = {Variable} = readline()                            | none            
+          
+[If]
+Text      = if {condition} 
+          = -->TRUEBLOCK               |        | 1
+          = pass                       | ~block | 1
+          = else 
+          = -->FALSEBLOCK              | else   | 1 
+          = end
+                 
+[Output]
+Separator =,{space}
+Text      = println({Expression})                        | newline     
+          = print({Expression})    | ~newline
+
+[While]
+Text      = while {condition}
+          = -->BLOCK                   |        | 1              
+          = pass                       | ~block | 1
+          = end
+          
